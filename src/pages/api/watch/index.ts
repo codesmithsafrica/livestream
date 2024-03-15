@@ -24,8 +24,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
-      const room = req.query.room as string;
+  const room = req.query.room as string;
   const username = req.query.username as string;
   const token = await createViewerToken(room,username);
-  res.status(200).json({ token:token })
+  return res.status(200).json({ token:token })
+
 }

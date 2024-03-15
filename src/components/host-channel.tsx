@@ -7,51 +7,60 @@ import { useEffect, useState } from "react";
 import Chat from "./host-chat";
 import HostControls from "./host-controls";
 
+type StreamPayload = {
+  token: string,
+
+}
 export default function HostChannel({ slug }: { slug: string }) {
+  const name = 'james';
+  const [token, setToken] = useState<string>('');
   // const [streamerToken, setStreamerToken] = useState("");
 
   // NOTE: This is a hack to persist the streamer token in the session storage
   // so that the client doesn't have to create a streamer token every time they
   // navigate back to the page.
-  // useEffect(() => {
-  //   const getOrCreateStreamerToken = async () => {
-  //     const SESSION_STREAMER_TOKEN_KEY = `${slug}-streamer-token`;
-  //     const sessionToken = sessionStorage.getItem(SESSION_STREAMER_TOKEN_KEY);
-
-  //     if (sessionToken) {
-  //       const payload = jwtDecode(sessionToken);
-
-  //       if (payload.exp) {
-  //         const expiry = new Date(payload.exp * 1000);
-  //         if (expiry < new Date()) {
-  //           sessionStorage.removeItem(SESSION_STREAMER_TOKEN_KEY);
-  //           const token = await createStreamerToken(slug);
-  //           setStreamerToken(token);
-  //           sessionStorage.setItem(SESSION_STREAMER_TOKEN_KEY, token);
-  //           return;
-  //         }
-  //       }
-
-  //       setStreamerToken(sessionToken);
-  //     } else {
-  //       const token = await createStreamerToken(slug);
-  //       setStreamerToken(token);
-  //       sessionStorage.setItem(SESSION_STREAMER_TOKEN_KEY, token);
-  //     }
-  //   };
-  //   void getOrCreateStreamerToken();
-  // }, [slug]);
-  const room = slug;
-  const name = 'james';
-  const [token, setToken] = useState('');
-
   useEffect(() => {
-    (async () => {
-      const resp = await fetch(`http://localhost:3000/api/host?room=${room}&username=${name}`);
-      const data = await resp.json();
-      setToken(data.token);
-    })();
-  }, [slug]);
+    const getOrCreateStreamerToken = async () => {
+      const resp = await fetch(`http://localhost:3000/api/host?room=${slug}&username=${name}`);
+      const data:StreamPayload = await resp.json();
+      setToken(data?.token);
+      // const SESSION_STREAMER_TOKEN_KEY = `${slug}-streamer-token`;
+      // const sessionToken = sessionStorage.getItem(SESSION_STREAMER_TOKEN_KEY);
+
+      // if (sessionToken) {
+      //   const payload = jwtDecode(sessionToken);
+
+      //   if (payload.exp) {
+      //     const expiry = new Date(payload.exp * 1000);
+      //     if (expiry < new Date()) {
+      //       sessionStorage.removeItem(SESSION_STREAMER_TOKEN_KEY);
+      //       const token = await createStreamerToken(slug);
+      //       setStreamerToken(token);
+      //       sessionStorage.setItem(SESSION_STREAMER_TOKEN_KEY, token);
+      //       return;
+      //     }
+      //   }
+
+      //   setStreamerToken(sessionToken);
+      // } else {
+      //   const token = await createStreamerToken(slug);
+      //   setStreamerToken(token);
+      //   sessionStorage.setItem(SESSION_STREAMER_TOKEN_KEY, token);
+      // }
+    };
+    void getOrCreateStreamerToken();
+  }, [slug,name]);
+
+
+
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const resp = await fetch(`http://localhost:3000/api/host?room=${slug}&username=${name}`);
+  //     const data = await resp.json();
+  //     setToken(data.token);
+  //   })();
+  // }, [slug]);
 
   if (token === '') {
     return <div>Getting token...</div>;
