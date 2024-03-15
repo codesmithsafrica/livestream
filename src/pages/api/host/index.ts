@@ -1,5 +1,6 @@
 import { createStreamerToken } from "@/app/actions";
 import type { NextApiRequest, NextApiResponse } from 'next'
+import cors from "cors";
  
 type ResponseData = {
   token: string
@@ -14,5 +15,6 @@ export default async function handler(
   const token = await createStreamerToken(room);
   res.status(200).json({ token:token })
 }
+
 
 
