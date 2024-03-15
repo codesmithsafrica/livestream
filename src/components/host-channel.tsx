@@ -1,14 +1,14 @@
 "use client";
 
-import { createStreamerToken } from "@/app/actions";
+// import { createStreamerToken } from "@/app/actions";
 import { LiveKitRoom } from "@livekit/components-react";
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import Chat from "./host-chat";
 import HostControls from "./host-controls";
 
 export default function HostChannel({ slug }: { slug: string }) {
-  const [streamerToken, setStreamerToken] = useState("");
+  // const [streamerToken, setStreamerToken] = useState("");
 
   // NOTE: This is a hack to persist the streamer token in the session storage
   // so that the client doesn't have to create a streamer token every time they

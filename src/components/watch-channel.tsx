@@ -1,18 +1,18 @@
 "use client";
 
-import { createViewerToken } from "@/app/actions";
+
 import ChannelInfo from "@/components/channel-info";
 import StreamPlayer from "@/components/stream-player";
 import WatchingAsBar from "@/components/watching-as-bar";
 import { faker } from "@faker-js/faker";
 import { LiveKitRoom } from "@livekit/components-react";
-import { jwtDecode, type JwtPayload } from "jwt-decode";
+
 import { useEffect, useMemo, useState } from "react";
 import Chat from "./host-chat";
 
 export default function WatchChannel({ slug }: { slug: string }) {
-  const [viewerToken, setViewerToken] = useState("");
-  const [viewerName, setViewerName] = useState("");
+  // const [viewerToken, setViewerToken] = useState("");
+  // const [viewerName, setViewerName] = useState("");
 
   const fakeName = useMemo(() => faker.person.fullName(), []);
 
@@ -61,7 +61,7 @@ export default function WatchChannel({ slug }: { slug: string }) {
 
   useEffect(() => {
     (async () => {
-      const resp = await fetch(`http://localhost:3000/api/host?room=${room}&username=${fakeName}`);
+      const resp = await fetch(`http://localhost:3000/api/watch?room=${room}&username=${fakeName}`);
       const data = await resp.json();
       setToken(data.token);
     })();
@@ -70,9 +70,9 @@ export default function WatchChannel({ slug }: { slug: string }) {
   if (token === '') {
     return <div>Getting token...</div>;
   }
-  if (viewerToken === "" || viewerName === "") {
-    return null;
-  }
+  // if (viewerToken === "" || viewerName === "") {
+  //   return null;
+  // }
 
   return (
     <LiveKitRoom
