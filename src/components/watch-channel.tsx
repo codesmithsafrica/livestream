@@ -19,62 +19,76 @@ export default function WatchChannel({ slug }: { slug: string }) {
   // NOTE: This is a hack to persist the viewer token in the session storage
   // so that the client doesn't have to create a viewer token every time they
   // navigate back to the page.
+  // useEffect(() => {
+  //   const getOrCreateViewerToken = async () => {
+  //     const SESSION_VIEWER_TOKEN_KEY = `${slug}-viewer-token`;
+  //     const sessionToken = sessionStorage.getItem(SESSION_VIEWER_TOKEN_KEY);
+
+  //     if (sessionToken) {
+  //       const payload: JwtPayload = jwtDecode(sessionToken);
+
+  //       if (payload.exp) {
+  //         const expiry = new Date(payload.exp * 1000);
+  //         if (expiry < new Date()) {
+  //           sessionStorage.removeItem(SESSION_VIEWER_TOKEN_KEY);
+  //           const token = await createViewerToken(slug, fakeName);
+  //           setViewerToken(token);
+  //           const jti = jwtDecode(token)?.jti;
+  //           jti && setViewerName(jti);
+  //           sessionStorage.setItem(SESSION_VIEWER_TOKEN_KEY, token);
+  //           return;
+  //         }
+  //       }
+
+  //       if (payload.jti) {
+  //         setViewerName(payload.jti);
+  //       }
+
+  //       setViewerToken(sessionToken);
+  //     } else {
+  //       const token = await createViewerToken(slug, fakeName);
+  //       setViewerToken(token);
+  //       const jti = jwtDecode(token)?.jti;
+  //       jti && setViewerName(jti);
+  //       sessionStorage.setItem(SESSION_VIEWER_TOKEN_KEY, token);
+  //     }
+  //   };
+  //   void getOrCreateViewerToken();
+  // }, [fakeName, slug]);
+  const room = slug;
+  // const name = 'james';
+  const [token, setToken] = useState('');
+
   useEffect(() => {
-    const getOrCreateViewerToken = async () => {
-      const SESSION_VIEWER_TOKEN_KEY = `${slug}-viewer-token`;
-      const sessionToken = sessionStorage.getItem(SESSION_VIEWER_TOKEN_KEY);
+    (async () => {
+      const resp = await fetch(`http://localhost:3000/api/host?room=${room}&username=${fakeName}`);
+      const data = await resp.json();
+      setToken(data.token);
+    })();
+  }, [slug]);
 
-      if (sessionToken) {
-        const payload: JwtPayload = jwtDecode(sessionToken);
-
-        if (payload.exp) {
-          const expiry = new Date(payload.exp * 1000);
-          if (expiry < new Date()) {
-            sessionStorage.removeItem(SESSION_VIEWER_TOKEN_KEY);
-            const token = await createViewerToken(slug, fakeName);
-            setViewerToken(token);
-            const jti = jwtDecode(token)?.jti;
-            jti && setViewerName(jti);
-            sessionStorage.setItem(SESSION_VIEWER_TOKEN_KEY, token);
-            return;
-          }
-        }
-
-        if (payload.jti) {
-          setViewerName(payload.jti);
-        }
-
-        setViewerToken(sessionToken);
-      } else {
-        const token = await createViewerToken(slug, fakeName);
-        setViewerToken(token);
-        const jti = jwtDecode(token)?.jti;
-        jti && setViewerName(jti);
-        sessionStorage.setItem(SESSION_VIEWER_TOKEN_KEY, token);
-      }
-    };
-    void getOrCreateViewerToken();
-  }, [fakeName, slug]);
-
+  if (token === '') {
+    return <div>Getting token...</div>;
+  }
   if (viewerToken === "" || viewerName === "") {
     return null;
   }
 
   return (
     <LiveKitRoom
-      token={viewerToken}
+      token={token}
       serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_WS_URL}
       className="flex flex-1 flex-col"
     >
-      <WatchingAsBar viewerName={viewerName} />
+      <WatchingAsBar viewerName={fakeName} />
       <div className="flex h-full flex-1">
         <div className="flex-1 flex-col container">
           <StreamPlayer streamerIdentity={slug} />
-          <ChannelInfo streamerIdentity={slug} viewerIdentity={viewerName} />
+          <ChannelInfo streamerIdentity={slug} viewerIdentity={fakeName} />
         </div>
         <div className="sticky hidden w-80 border-l md:block">
           <div className="absolute top-0 bottom-0 right-0 flex h-full w-full flex-col gap-2 p-2">
-            <Chat participantName={viewerName} />
+            <Chat participantName={fakeName} />
           </div>
         </div>
       </div>
