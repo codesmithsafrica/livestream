@@ -21,7 +21,7 @@ export default function HostChannel({ slug }: { slug: string }) {
   // navigate back to the page.
   useEffect(() => {
     const getOrCreateStreamerToken = async () => {
-      const resp = await fetch(`http://localhost:3000/api/host?room=${slug}&username=${name}`);
+      const resp = await fetch(`https://livestream-ruby.vercel.app/api/host?room=${slug}&username=${name}`);
       const data:StreamPayload = await resp.json();
       setToken(data?.token);
       // const SESSION_STREAMER_TOKEN_KEY = `${slug}-streamer-token`;

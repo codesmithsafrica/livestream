@@ -28,7 +28,7 @@ export default function WatchChannel({ slug }: { slug: string }) {
   useEffect(() => {
     const getOrCreateViewerToken = async ()=> {
      
-      const resp = await fetch(`http://localhost:3000/api/watch?room=${slug}&username=${fakeName}`)
+      const resp = await fetch(`https://livestream-ruby.vercel.app/api/watch?room=${slug}&username=${fakeName}`)
 
       const data:StreamPayload = await resp.json();
       setToken(data);
