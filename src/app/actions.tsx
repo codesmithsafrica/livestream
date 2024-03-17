@@ -12,13 +12,13 @@ import { TrackSource } from "livekit-server-sdk/dist/proto/livekit_models";
 
 const ingressClient = new IngressClient(process.env.LIVEKIT_API_URL!);
 
-export async function createStreamerToken(slug: string) {
+export async function createStreamerToken(slug: string,identity: string) {
   const token = new AccessToken(
     process.env.LIVEKIT_API_KEY,
     process.env.LIVEKIT_API_SECRET,
     {
       // HACK: should really be the streamer's name
-      identity: slug,
+      identity: identity,
     }
   );
 
