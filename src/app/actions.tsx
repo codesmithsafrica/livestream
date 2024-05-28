@@ -12,13 +12,14 @@ import { TrackSource } from "livekit-server-sdk/dist/proto/livekit_models";
 
 const ingressClient = new IngressClient(process.env.LIVEKIT_API_URL!);
 
-export async function createStreamerToken(slug: string,identity: string) {
+export async function createStreamerToken(slug: string,identity: string,url: string) {
   const token = new AccessToken(
     process.env.LIVEKIT_API_KEY,
     process.env.LIVEKIT_API_SECRET,
     {
       // HACK: should really be the streamer's name
-      identity: identity +' '+'/profile/host',
+      identity: identity ,
+      metadata:url
     }
   );
 
@@ -32,12 +33,13 @@ export async function createStreamerToken(slug: string,identity: string) {
   return await Promise.resolve(token.toJwt());
 }
 
-export async function createViewerToken(roomName: string, identity: string) {
+export async function createViewerToken(roomName: string, identity: string,url:string) {
   const token = new AccessToken(
     process.env.LIVEKIT_API_KEY,
     process.env.LIVEKIT_API_SECRET,
     {
-      identity: identity +' '+' /profile/view',
+      identity: identity ,
+      metadata:url
     }
   );
 
