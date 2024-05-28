@@ -18,7 +18,7 @@ export async function createStreamerToken(slug: string,identity: string) {
     process.env.LIVEKIT_API_SECRET,
     {
       // HACK: should really be the streamer's name
-      identity: identity,
+      identity: identity +' '+'/profile/host',
     }
   );
 
@@ -37,7 +37,7 @@ export async function createViewerToken(roomName: string, identity: string) {
     process.env.LIVEKIT_API_KEY,
     process.env.LIVEKIT_API_SECRET,
     {
-      identity: identity,
+      identity: identity +' '+' /profile/view',
     }
   );
 
