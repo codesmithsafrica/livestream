@@ -20,13 +20,14 @@ export default async function handler(
 
     },
   })
-  // const deleteStream = await db.livetream.delete({
-  //   where: {
-  //     id: stream?.id,
-  //   },
-  // })
-  console.log('livestream', stream)
-  res.status(200).json({ message: 'delete' })
+  //delete stream
+  const deleteStream = await db.livetream.delete({
+    where: {
+      id: stream?.id,
+    },
+  })
+ 
+  res.status(200).json({ message: 'deleted successfully' })
 
 }
 
