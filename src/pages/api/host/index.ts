@@ -12,7 +12,8 @@ export default async function handler(
 ) {
       const room = req.query.room as string;
   const username = req.query.username as string;
-  const token = await createStreamerToken(room,username);
+  const url = req.query.url as string;
+  const token = await createStreamerToken(room,username,url);
   const livestream = await db.livetream.create({
     data: {
       title:room,

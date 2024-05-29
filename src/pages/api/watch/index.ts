@@ -26,7 +26,8 @@ export default async function handler(
 ) {
   const room = req.query.room as string;
   const username = req.query.username as string;
-  const token = await createViewerToken(room,username);
+  const url = req.query.url as string;
+  const token = await createViewerToken(room,username,url);
   return res.status(200).json({ token:token })
 
 }
