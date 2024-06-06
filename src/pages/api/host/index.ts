@@ -10,14 +10,16 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
-      const room = req.query.room as string;
+  const room = req.query.room as string;
   const username = req.query.username as string;
   const url = req.query.url as string;
   const token = await createStreamerToken(room,username,url);
+
   const livestream = await db.livetream.create({
     data: {
       title:room,
-      streamer:username
+      streamer:username,
+      url:url,
     },
   });
   res.status(200).json({ token:token })

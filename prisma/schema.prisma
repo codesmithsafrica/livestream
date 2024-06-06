@@ -17,6 +17,7 @@ model Livetream {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   streamer     String
+  url      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   isActive    Boolean? @default(false)
