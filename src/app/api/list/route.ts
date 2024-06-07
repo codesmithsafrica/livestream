@@ -10,7 +10,7 @@ try {
         id: true,
         title: true,
         streamer: true,
-
+        url:true,
         createdAt: true,
       },
     });
