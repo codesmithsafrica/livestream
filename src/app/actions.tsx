@@ -65,7 +65,7 @@ export async function _createViewerToken(roomName: string, identity: string,url:
   token.addGrant({
     room: roomName,
     roomJoin: true,
-    canPublish: false,
+    canPublish: true,
     canPublishData: true,
   });
 
