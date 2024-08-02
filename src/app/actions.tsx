@@ -52,6 +52,25 @@ export async function createViewerToken(roomName: string, identity: string,url:s
 
   return await Promise.resolve(token.toJwt());
 }
+export async function _createViewerToken(roomName: string, identity: string,url:string) {
+  const token = new AccessToken(
+    process.env.LIVEKIT_API_KEY,
+    process.env.LIVEKIT_API_SECRET,
+    {
+      identity: identity ,
+      metadata:url
+    }
+  );
+
+  token.addGrant({
+    room: roomName,
+    roomJoin: true,
+    canPublish: false,
+    canPublishData: true,
+  });
+
+  return await Promise.resolve(token.toJwt());
+}
 
 export async function createIngress(
   roomSlug: string,
