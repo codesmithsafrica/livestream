@@ -47,7 +47,7 @@ export async function createViewerToken(roomName: string, identity: string,url:s
     room: roomName,
     roomJoin: true,
     canPublish: false,
-    canPublishData: true,
+    canPublishData: false,
   });
 
   return await Promise.resolve(token.toJwt());
